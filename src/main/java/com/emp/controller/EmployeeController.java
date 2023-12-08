@@ -45,6 +45,8 @@ public class EmployeeController {
 	@PostMapping("/add")
 	public ResponseEntity<EmployeeDTO> saveDetails(@RequestBody @Valid EmployeeDTO dto) {
 		EmployeeDTO entity2 = service.saveDetails(dto);
+		
+		System.out.println(entity2);
 		return new ResponseEntity<>(entity2, HttpStatus.CREATED);
 
 	}
