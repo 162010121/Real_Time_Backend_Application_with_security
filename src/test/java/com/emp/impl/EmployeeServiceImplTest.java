@@ -61,7 +61,7 @@ public class EmployeeServiceImplTest {
 
 		mock(EmployeeRepo.class);
 		
-		dto.setId(1);
+		dto.setId(1L);
 		dto.setFristName("Praveen");
 		dto.setLastName("Pustera");
 		dto.setEmail("Praveen@email.com");
