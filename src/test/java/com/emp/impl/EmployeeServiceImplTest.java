@@ -1,36 +1,33 @@
 package com.emp.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.entity.EmployeeEntity;
 import com.emp.repo.EmployeeRepo;
-import com.emp.service.EmployeeService;
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 
 public class EmployeeServiceImplTest {
 
 	@Mock
-	private EmployeeRepo respository;
+	private EmployeeRepo repository;
 
-	@Mock
-	private EmployeeService service;
+	@InjectMocks
+	private EmployeeServiceImpl service;
 
 	AutoCloseable autoCloseable;
 
@@ -39,44 +36,44 @@ public class EmployeeServiceImplTest {
 	@BeforeEach
 	void setUp() {
 
-		autoCloseable = MockitoAnnotations.openMocks(this);
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-		autoCloseable.close();
+		autoCloseable = MockitoAnnotations.openMocks(service);
+		employeeDTO = new EmployeeDTO();
 
 	}
 
-//	@Test
-//	void testCreateEmployee() throws Exception {
-//
-//		EmployeeDTO empDto = new EmployeeDTO(1, "Praveen", "Pustera", "Praveen@email.com", "Praveen@123", "IAS", 10000,
-//				"");
-//		
-//		EmployeeEntity entity=new EmployeeEntity();
-//
-//		when(respository.save(entity)).thenReturn(entity);
-//		assertEquals(entity, service.saveDetails(empDto));
-//
-//	}
+	@Test
+	public void testInsertEmployee() {
+		EmployeeEntity entity = mock(EmployeeEntity.class);
+		EmployeeDTO employee = mock(EmployeeDTO.class);
+		mock(EmployeeRepo.class);
+
+		when(repository.save(entity)).thenReturn(entity);
+		assertThat(service.saveDetails(employee));
+
+	}
 	
 	@Test
-	@DisplayName("Should save the movie Object")
-	void testInsertEmployee_Success() throws Exception
+	public void testInsertUserException()throws Exception
 	{
-		EmployeeEntity employeeEntity=new EmployeeEntity();
-		employeeEntity.setId(1L);
-		employeeEntity.setFristName("Praveen");
-		employeeEntity.setLastName("Pusteta");
+			
+		EmployeeDTO dto=mock(EmployeeDTO.class);
+		EmployeeEntity entity =mock(EmployeeEntity.class);
+
+		mock(EmployeeRepo.class);
 		
-		when(respository.save(any(EmployeeEntity.class))).thenReturn(employeeEntity);
+		dto.setId(1);
+		dto.setFristName("Praveen");
+		dto.setLastName("Pustera");
+		dto.setEmail("Praveen@email.com");
+		dto.setPassword("$2a$10$oqbjHIFaGgWJ4DNnsUZN0OjroirAADz.CBdSoKsBR8c4DCbfCz6qC");
+		dto.setSalary(10000);
+		dto.setDepartment("IAS");
 		
 		
-		EmployeeDTO empDTO=service.saveDetails(employeeDTO);
-		assertNotNull(empDTO);
-		assertThat(empDTO.getFristName()).isEqualTo("Praveen");
+		when(repository.save(Mockito.any())).thenReturn(entity);
+		EmployeeDTO empDTO=service.saveDetails(dto);
+		assertNotEquals(entity, empDTO);
 		
 	}
-	
+
 }

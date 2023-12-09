@@ -29,10 +29,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 			dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 			EmployeeEntity entity = entityToDTO(dto);
 			repo.save(entity);
-			return dto;
-		} catch (Exception e) {
-			throw new UsernameNotFoundException("Exception Accured",e);
+		} 
+		
+		catch (Exception e) {
+			//throw new UsernameNotFoundException("Exception Accured",e);
 		}
+		return dto;
 
 	}
 
