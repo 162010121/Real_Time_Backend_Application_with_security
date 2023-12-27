@@ -47,6 +47,9 @@ public class EmployeeEntity {
 	@Column(name = "deparment")
 	private String department;
 
+	
+        @NotEmpty
+	@Size(min=3,message = "Action Should be atleast 3 Characters")
 	@Column(name = "action")
 	private String action;
 
