@@ -98,7 +98,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 //	}
 
 	public EmployeeEntity getEmployee1(Long id) {
-		// TODO Auto-generated method stub
 		return repo.findById(id).get();
 	}
 
@@ -110,13 +109,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public List<EmployeeEntity> getAllEmployee() {
-		// TODO Auto-generated method stub
 		return repo.findAll();
 	}
 
 	@Override
 	public EmployeeEntity findByFristnameAndLastname(String firstName, String lastName) {
-		// TODO Auto-generated method stub
 		return repo.findByFristnameAndLastname(firstName, lastName);
 	}
 
