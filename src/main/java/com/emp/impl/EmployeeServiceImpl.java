@@ -68,16 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return repo.findById(id).get();
 	}
 
-//	@Override
-//	public EmployeeEntity saveDetails(EmployeeEntity entity) {
-//		
-//		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-//			
-//			return repo.save(entity);
-//
-//			
-//		
-//	}
+
 //
 //	@Override
 //	public EmployeeEntity updateDetails(EmployeeEntity entity, Long id) {
