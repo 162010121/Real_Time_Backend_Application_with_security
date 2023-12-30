@@ -1,5 +1,7 @@
 package com.emp.entity;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,6 +61,10 @@ public class EmployeeEntity {
 	
 	@Column(name="password")
 	private String password;
+	
+	
+	@Column(name="created_at")
+	private Date  loginAt;
 
 	
 	

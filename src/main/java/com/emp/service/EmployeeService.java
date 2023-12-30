@@ -3,6 +3,8 @@ package com.emp.service;
 import java.util.List;
 
 import com.emp.dto.EmployeeDTO;
+import com.emp.dto.EmployeeLoginDTO;
+import com.emp.dto.EmployeeLogout;
 import com.emp.entity.EmployeeEntity;
 
 public interface EmployeeService {
@@ -32,5 +34,9 @@ public interface EmployeeService {
 	public List<EmployeeEntity> getAllEmployee();
 
 	public EmployeeEntity findByFristnameAndLastname(String firstName, String lastName);
+	
+	public EmployeeDTO employeeLogin(EmployeeLoginDTO loginDTO);
+	
+	public String logout(EmployeeLogout logout);
 
 }

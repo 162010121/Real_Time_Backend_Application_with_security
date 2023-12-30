@@ -24,12 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emp.dto.EmployeeDTO;
 import com.emp.dto.EmployeeLoginDTO;
+import com.emp.dto.EmployeeLogout;
 import com.emp.entity.EmployeeEntity;
 import com.emp.service.EmployeeService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping( "/employee/")
+@RequestMapping("/employee/")
 @Validated
 public class EmployeeController {
 
@@ -42,8 +43,6 @@ public class EmployeeController {
 	@PostMapping("/add")
 	public ResponseEntity<EmployeeDTO> saveDetails(@RequestBody @Valid EmployeeDTO dto) {
 		EmployeeDTO entity2 = service.saveDetails(dto);
-		
-		System.out.println(entity2);
 		return new ResponseEntity<>(entity2, HttpStatus.CREATED);
 
 	}
@@ -60,12 +59,8 @@ public class EmployeeController {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		
-			return new ResponseEntity<>("User Successfully Login", HttpStatus.OK);
 
-		
-		
+		return new ResponseEntity<>("User Successfully Login", HttpStatus.OK);
 
 	}
 
@@ -96,12 +91,19 @@ public class EmployeeController {
 	public ResponseEntity<EmployeeEntity> getByNames(@PathVariable("fristName") String fristName,
 			@PathVariable("lastName") String lastName) {
 
-	
-		
 		EmployeeEntity entities = service.findByFristnameAndLastname(fristName, lastName);
-			return new ResponseEntity<>(entities, HttpStatus.OK);
+		return new ResponseEntity<>(entities, HttpStatus.OK);
 
-		
 	}
+	
+	
+//	@PostMapping("/login")
+//	public ResponseEntity<EmployeeDTO> loginUser(@RequestBody EmployeeLoginDTO loging)
+//	{
+//		EmployeeDTO login=service.employeeLogin(loging);
+//		return new ResponseEntity<>(login,HttpStatus.OK);
+//	}
+	
+	
 
 }
