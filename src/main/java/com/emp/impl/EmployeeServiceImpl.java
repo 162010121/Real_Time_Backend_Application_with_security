@@ -1,5 +1,8 @@
 package com.emp.impl;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.emp.dto.EmployeeDTO;
+import com.emp.dto.EmployeeLoginDTO;
+import com.emp.dto.EmployeeLogout;
 import com.emp.entity.EmployeeEntity;
+import com.emp.exception.UserCustomException;
 import com.emp.repo.EmployeeRepo;
 import com.emp.service.EmployeeService;
 
@@ -29,10 +35,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 			dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 			EmployeeEntity entity = entityToDTO(dto);
 			repo.save(entity);
-		} 
-		
+		}
+
 		catch (Exception e) {
-			//throw new UsernameNotFoundException("Exception Accured",e);
+			// throw new UsernameNotFoundException("Exception Accured",e);
 		}
 		return dto;
 
@@ -42,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeDTO updateDetails(EmployeeDTO dto) {
 
 		try {
-			EmployeeEntity entity=new EmployeeEntity();
+			EmployeeEntity entity = new EmployeeEntity();
 			entity.setFristName(dto.getFristName());
 			entity.setLastName(dto.getLastName());
 			entity.setEmail(dto.getEmail());
@@ -50,14 +56,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 			entity.setSalary(dto.getSalary());
 			entity.setDepartment(dto.getDepartment());
 			repo.save(entity);
-			
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 
 		}
 		return dto;
-	
 
 	}
 
@@ -129,6 +133,54 @@ public class EmployeeServiceImpl implements EmployeeService {
 		entity.setSalary(dto.getSalary());
 		return entity;
 
+	}
+
+	@Override
+	public EmployeeDTO employeeLogin(EmployeeLoginDTO loginDTO) {
+
+		if (loginDTO.getEmail() != null && !loginDTO.getEmail().isEmpty()) {
+			EmployeeDTO dto = new EmployeeDTO();
+
+			dto.setEmail(loginDTO.getEmail());
+		}
+		EmployeeEntity findByEmail = repo.findByEmailId(loginDTO.getEmail().toLowerCase());
+		if (null != findByEmail) {
+			//String securePassword = getSecurePassword(loginDTO.getPassword());
+
+			if (findByEmail.getPassword().equals(loginDTO.getPassword())) {
+				EmployeeDTO employeeDTO = new EmployeeDTO();
+				employeeDTO.setId(findByEmail.getId());
+				employeeDTO.setFristName(findByEmail.getFristName());
+				employeeDTO.setLastName(findByEmail.getLastName());
+				employeeDTO.setEmail(findByEmail.getEmail());
+				employeeDTO.setPassword(findByEmail.getPassword());
+				employeeDTO.setLoginAt(new Date());
+				employeeDTO.setDepartment(findByEmail.getDepartment());
+				// employeeDTO.setAction(null);
+				return employeeDTO;
+			} else {
+				throw new UserCustomException("Please enter correct password");
+			}
+
+		} else {
+			throw new UserCustomException("no such record found");
+		}
+		
+		
+
+	}
+
+	@Override
+	public String logout(EmployeeLogout logout) {
+		
+		EmployeeDTO dto=new EmployeeDTO();
+		if(logout.getEmail().equals(dto.getEmail()) )
+		{
+			repo.deleteByEmailId(dto.getEmail());
+		}
+		
+		
+		return "Employee Logout Successfully";
 	}
 
 }
